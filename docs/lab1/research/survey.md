@@ -53,7 +53,7 @@
 
 ## Визуализация
 
-![Пол и возраст](images/answ1.png)
+![Пол и возраст](lab1/images/answ1.png)
 ![Социальное положение](images/answ2.png)
 ![Использование интернета](images/answ3.png)
 ![Важные функции](images/answ4.png)
