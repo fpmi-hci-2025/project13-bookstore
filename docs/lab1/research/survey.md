@@ -52,12 +52,11 @@
   - Предложения: понятный и удобный интерфейс; оповещения о новинках любимых авторов; скидки/уведомления.
 
 ## Визуализация
-
-![Пол и возраст](lab1/images/answ1.png)
-![Социальное положение](images/answ2.png)
-![Использование интернета](images/answ3.png)
-![Важные функции](images/answ4.png)
-![Использование гаджетов](images/answ5.png)
-![Операционная система](images/answ6.png)
-![Причина покупки](images/answ7.png)
-![Пожелания](images/answ8.png)
+![Пол и возраст](https://github.com/user-attachments/assets/58c2b577-cf83-4475-8c9a-aea17862a3c)
+![Социальное положение](https://github.com/user-attachments/assets/90c4eab0-bf8d-4c97-b158-79e4a5b422ea)
+![Использование интернета](https://github.com/user-attachments/assets/beff5295-7e40-4c39-81db-77ccabeb7bf3)
+![Важные функции](https://github.com/user-attachments/assets/cd3a9090-fd14-4de0-bb96-c0f1dde69c11)
+![Использование гаджетов](https://github.com/user-attachments/assets/ea43cb40-d67f-4d92-967e-bbdb4d8b027c)
+![Операционная система](https://github.com/user-attachments/assets/7d261b66-b013-41e7-b01f-db5da4591279)
+![Причина покупки](https://github.com/user-attachments/assets/6b09ccff-e369-49b4-9fbf-0e5557d363d5)
+![Пожелания](https://github.com/user-attachments/assets/4eee3331-d383-4175-988f-513f58efe265)
