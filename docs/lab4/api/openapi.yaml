@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: Bookstore API (Demo)
+  version: 1.0.0
+  description: Упрощённое API интернет-магазина книг для учебных целей.
+  contact:
+    name: Team
+    email: example@example.com
+servers:
+  - url: https://mock.bookstore.local/api
+    description: Примерный Mock URL (замените на SwaggerHub Mock)
+
+tags:
+  - name: auth
+    description: Аутентификация
+  - name: books
+    description: Каталог книг
+  - name: cart
+    description: Корзина/заказы
+  - name: reviews
+    description: Отзывы
+
+paths:
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              default:
+                value: { username: "anna", password: "P@ssw0rd" }
+      responses:
+        '200':
+          description: Успешная авторизация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Неверные учётные данные
+
+  /books:
+    get:
+      tags: [books]
+      summary: Список книг с фильтрами
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+          description: Поиск по названию/автору
+        - in: query
+          name: genre
+          schema: { type: string }
+        - in: query
+          name: sort
+          schema: { type: string, enum: [price, newest] }
+      responses:
+        '200':
+          description: Список книг
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Book' }
+
+  /books/{id}:
+    get:
+      tags: [books]
+      summary: Детали книги
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Карточка книги
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Book' }
+        '404': { description: Книга не найдена }
+
+  /cart/items:
+    post:
+      tags: [cart]
+      summary: Добавить книгу в корзину
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AddToCartRequest' }
+            examples:
+              default:
+                value: { bookId: 1, quantity: 2 }
+      responses:
+        '201': { description: Товар добавлен }
+        '409': { description: Нет на складе }
+
+  /orders:
+    post:
+      tags: [cart]
+      summary: Оформить заказ
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateOrderRequest' }
+            examples:
+              default:
+                value:
+                  deliveryAddress: "Москва, ул. Пушкина, 1"
+                  payment: { method: "card", pan: "4111111111111111", exp: "12/26" }
+      responses:
+        '201':
+          description: Заказ создан
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OrderCreated' }
+        '400': { description: Ошибка валидации }
+        '402': { description: Платёж отклонён }
+
+  /books/{id}/reviews:
+    post:
+      tags: [reviews]
+      summary: Оставить отзыв к книге
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateReviewRequest' }
+            examples:
+              default:
+                value: { rating: 5, comment: "Отличная книга!" }
+      responses:
+        '201': { description: Отзыв создан }
+        '400': { description: Ошибка валидации }
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username: { type: string }
+        password: { type: string, format: password }
+
+    AuthResponse:
+      type: object
+      properties:
+        token: { type: string }
+        expiresIn: { type: integer, example: 3600 }
+
+    Book:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        author: { type: string }
+        genre: { type: string }
+        price: { type: number, format: float }
+        stock: { type: integer }
+
+    AddToCartRequest:
+      type: object
+      required: [bookId, quantity]
+      properties:
+        bookId: { type: integer }
+        quantity: { type: integer, minimum: 1 }
+
+    CreateOrderRequest:
+      type: object
+      required: [deliveryAddress, payment]
+      properties:
+        deliveryAddress: { type: string }
+        payment:
+          type: object
+          required: [method]
+          properties:
+            method: { type: string, enum: [card, wallet] }
+            pan: { type: string, description: Маскируется, только для моков }
+            exp: { type: string }
+
+    OrderCreated:
+      type: object
+      properties:
+        orderId: { type: integer, example: 1001 }
+        status: { type: string, example: created }
+
+    CreateReviewRequest:
+      type: object
+      required: [rating]
+      properties:
+        rating: { type: integer, minimum: 1, maximum: 5 }
+        comment: { type: string }

@@ -1,0 +1,48 @@
+erDiagram
+  USER ||--o{ ORDER : places
+  ORDER ||--o{ ORDER_ITEM : contains
+  BOOK ||--o{ ORDER_ITEM : included
+  USER ||--o{ REVIEW : writes
+  BOOK ||--o{ REVIEW : has
+
+  USER {
+    int id
+    varchar username
+    varchar password
+    varchar email
+  }
+
+  BOOK {
+    int id
+    varchar title
+    varchar author
+    varchar genre
+    decimal price
+    int stock
+  }
+
+  ORDER {
+    int id
+    int user_id
+    decimal total_price
+    varchar delivery_address
+    timestamp created_at
+    varchar status
+  }
+
+  ORDER_ITEM {
+    int id
+    int order_id
+    int book_id
+    int quantity
+    decimal price
+  }
+
+  REVIEW {
+    int id
+    int user_id
+    int book_id
+    int rating
+    text comment
+    timestamp created_at
+  }
